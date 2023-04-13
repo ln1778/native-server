@@ -121,26 +121,22 @@ export default ({
       }
     }
     let newurl = '';
-    if (/http/.test(url)) {
+    if (/^http/.test(url)) {
       newurl = url;
     } else {
-      newurl = myconfig.indexurl + url;
+      newurl = myconfig.config.indexurl + url;
     }
     getStorage('token').then((token)=>{
         if(token){
             config.headers.Authorization=token;
         }
-          axioshooks(newurl, paramsdata, config)
+          axioshooks(newurl, data, config)
           .then((response) => {
             console.log(response.data, 'response',newurl);
             if (response.data.code == 400) {
               handler(null, response, response.data);
               dispatch({ type: actions.fail, payload: response });
-              if(response.data.data&&response.data.data.login&&response.data.data.login == 1){
-                deloneStorage('token');
-              }else if (response.data.data&&response.data.data.login == "token不存在"||response.data.data.login == "token失效"||response.data.data.error == "token not found") {
-                handler(null, response, response.data);
-              } 
+             
             
             } else {
               if (response.data) {
