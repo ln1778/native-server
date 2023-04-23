@@ -1,24 +1,13 @@
-const indexurl = ['http://localhost:7000/android/','https://gc.dz520.fun/android/'];
+const indexurl = ['https://chat.allianceshopping.cn/index/'];
 
 let i=[0];
 
-let newconfig=null;
-function SettingConfig(){
-
-}
-
-
-let config=new SettingConfig();
-config.config={ indexurl:indexurl[i],};
-config.setConfig=function(data){
+window.config={ indexurl:indexurl[i],setConfig:(data)=>{
   if(data){
-    config.config=data;
+    window.config=Object.assign({},window.config,data);
    }
-}
+}}
 
 
-if(!newconfig){
-  newconfig=config;
-}
 
-export default newconfig;
+export default window.config;

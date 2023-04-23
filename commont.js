@@ -100,62 +100,7 @@ export function html_decode(str)
   s = s.replace(/<br>/g, "\n");   
   return s;   
 }
-export function chat_decode_img(str,smilies_array,yy)   
-{   
-    let regtext=str;
-    let reg=null;
-    let splitdata=null;
-    let matchdata=null;
-    let resultelem=[];
-    if(smilies_array&&smilies_array.length>0){
-    smilies_array.map((h,indexs)=>{
-         reg =new RegExp('(\['+h[3]+'+\])', "g");
-           if(reg.test(regtext)){
-          regtext=regtext.replace(reg,','+JSON.stringify({img:h[2]})+',');
-              }
-    });
-    regtext=regtext.split(',');
-}
-if(typeof(regtext=='array')){
-        resultelem=regtext.map((h,sindex)=>{
-            if(h!=''){
-             if(/^{.*}$/.test(h)){ 
-              let paresemsg=JSON.parse(h);
-              const img=paresemsg.img;
-        if(img){
-     return(<Image key={sindex} source={{uri:config.resource+'/js/smilies/images/'+img}} style={{width:30,height:30,marginHorizontal:2}}/>)
-          }
-             }else{ 
-     return(<Text key={sindex}>{h}</Text>);
-          }
-          }
-         });
-      return resultelem;
-}
-}
 
-export function baseurl(type,word){
-    if(word&&word!=''){
-    switch (type) {
-        case "keyword":
-            return {url:'product_list',id:encodeURIComponent(word),mode:'keyword',from:"search",modename:"mode"};
-        case "special":
-           return {url:'special',id:word,prex_name:'special_id',type:"special"};
-        case "goods":
-          return {url:'productDetails',id:word,prex_name:'goods_id',type:"goods"};
-        case "gc":
-         return {url:'product_list',id:word,mode:'gc_id',prex_name:'word',type:"gc",from:"",modename:"gc_id"};
-        case "url":
-              return {url:word,id:word,type:"url"};
-        case 'article':
-              return {url:word,type:"url"};
-            default:
-            return null;
-    }
-    }else{
-       return null;
-    }
-}
 export function getStorage(key){
   return new Promise(function(resolve, reject) {
 AsyncStorage.getItem(key,(err,value)=>{
@@ -182,155 +127,7 @@ export function deloneStorage(key){
   export function delallStorage(){
       AsyncStorage.clear();
   } 
-//把时间戳格式化成标准格式 第一个参数为时间戳，第二个参数为格式例如 ‘Y-m-d h:M:s'
-export function formatDate(date, format) {
-    const days = [
-        '周日',
-        '周一',
-        '周二',
-        '周三',
-        '周四',
-        '周五',
-        '周六'
-    ];
-    if (typeof date == 'number' || typeof date == 'string') {
-        if (date.length < 13) {
-            const j = 13 - date.length;
-            for (let i = 0; i < j; i++) {
-                date = date + '0';
-            }
-        }
-        date = new Date(Number(date));
-    } else if (typeof date === 'undefined') {
-        return '';
-    }
-    if (!format) {
-        format = 'Y-m-d';
-    }
 
-    if (Number(date.getHours()) < 10) {
-        var hour = '0' + String(date.getHours());
-    }
-    else {
-        var hour = date.getHours();
-    }
-    if (Number(date.getMinutes()) < 10) {
-        var Minute = '0' + String(date.getMinutes());
-    }
-    else {
-        var Minute = date.getMinutes();
-    }
-    if (Number(date.getSeconds()) < 10) {
-        var Seconds = '0' + String(date.getSeconds());
-    }
-    else {
-        var Seconds = date.getSeconds();
-    }
-    if (Number((date.getMonth()) + 1) < 10) {
-        var month = '0' + String(date.getMonth() + 1);
-    } else {
-        var month = date.getMonth() + 1;
-    }
-    if (Number(date.getDate()) < 10) {
-        var day = '0' + String(date.getDate());
-    } else {
-        var day = date.getDate();
-    }
-
-    format = format.replace('Y', date.getFullYear())
-        .replace('m', month)
-        .replace('d', day)
-        .replace('h', hour)
-        .replace('M', Minute)
-        .replace('D', days[date.getDay()])
-        .replace('s', Seconds);
-    return format;
-};
-//把时间戳格式化成标准格式 第一个参数为时间戳，第二个参数为格式例如 ‘Y-m-d h:M:s'
-export function formatbillsDate(date, format) {
-    const days = [
-        '周日',
-        '周一',
-        '周二',
-        '周三',
-        '周四',
-        '周五',
-        '周六',
-    ];
-
-  if (typeof date == 'number' || typeof date == 'string') {
-        if (date.length < 13) {
-            const j = 13 - date.length;
-            for (let i = 0; i < j; i++) {
-                date = date + '0';
-            }
-        }
-        date = new Date(Number(date));
-    } else if (typeof date === 'undefined') {
-        return '';
-    }
-    if (!format) {
-        format = 'Y-m-d';
-    }
-
-    if (Number(date.getHours()) < 10) {
-        var hour = '0' + String(date.getHours());
-    }
-    else {
-        var hour = date.getHours();
-    }
-    if (Number(date.getMinutes()) < 10) {
-        var Minute = '0' + String(date.getMinutes());
-    }
-    else {
-        var Minute = date.getMinutes();
-    }
-    if (Number(date.getSeconds()) < 10) {
-        var Seconds = '0' + String(date.getSeconds());
-    }
-    else {
-        var Seconds = date.getSeconds();
-    }
-    if (Number((date.getMonth()) + 1) < 10) {
-        var month = '0' + String(date.getMonth() + 1);
-    } else {
-        var month = date.getMonth() + 1;
-    }
-    if (Number(date.getDate()) < 10) {
-        var day = '0' + String(date.getDate());
-    } else {
-        var day = date.getDate();
-    }
-   const newyear=new Date().getFullYear();
-   const newmonth=new Date().getMonth() + 1;
-   const newday=new Date().getDay();
-   if(date.getFullYear()==newyear&&date.getMonth()+1==newmonth){
-       if(date.getDay()==6){
-            const getday=date.getDay();
-             if(newday==0){
-                  days[date.getDay()]='昨天'; 
-             }else if(newday==6){
-              days[date.getDay()]='今天'; 
-             }
-       }else{
-           const getday=date.getDay();
-            if(newday==getday){
-                  days[date.getDay()]='今天'; 
-             }else if(newday==getday+1){
-  days[date.getDay()]='昨天'; 
-             }
-       }
-   }
-
-    format = format.replace('Y', date.getFullYear())
-        .replace('m', month)
-        .replace('d', day)
-        .replace('h', hour)
-        .replace('M', Minute)
-        .replace('D', days[date.getDay()])
-        .replace('s', Seconds);
-    return format;
-};
 // 计算每个月的天数
 function getCountDays(curDate) {
     if (typeof curDate == 'number' || typeof curDate == 'string') {
@@ -447,18 +244,13 @@ export function canvasfn(imgsrc, truewidth,trueheight) {
     })
 }
 
-export function getIntersection(array1,array2,pix){
-    let intersection = [];
-   arr.map((h)=>{  fiterdata2=ar2.filter((v)=>v[pix]==h[pix]) ;intersection.push(...fiterdata2)})
-     return intersection;
-}
+
 
 
 // 添加 图片到相册
 export function saveImage(imgsrc){
     return new Promise((resolve, reject) => {
         let imgpath=imgsrc;
-        const {goPermission}=NativeModules.permissionSetting;
         const {saveImage}=NativeModules.LnsshModule;
         saveImage(imgpath,(result)=>{
             console.log("onSavePhotoresult",result);
@@ -518,3 +310,7 @@ export function randomArray(arr){
              return arr;
  }
         
+
+ const commont={getCountDays,delallStorage,lastfiveday,lastfiveechart,canvasfn,getQueryString,html_encode,html_format,delJSONData,html_decode,getStorage,addStorage,deloneStorage,isIphoneX,randomArray,swap,bubbleSort,saveImage};
+
+ export default commont;
