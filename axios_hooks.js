@@ -124,7 +124,11 @@ export default ({
     if (/^http/.test(url)) {
       newurl = url;
     } else {
-      newurl = myconfig.config.indexurl + url;
+      if(window.config&&window.config.indexurl){
+        newurl = window.config.indexurl + url;
+      }else{
+        newurl = myconfig.indexurl + url;
+      }
     }
     getStorage('token').then((token)=>{
         if(token){
