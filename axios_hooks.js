@@ -124,15 +124,11 @@ export default ({
     if (/^http/.test(url)) {
       newurl = url;
     } else {
-      if(window.config&&window.config.indexurl){
-        newurl = window.config.indexurl + url;
-      }else{
-        newurl = myconfig.indexurl + url;
-      }
+      newurl = window.config.indexurl + url;
     }
     getStorage('token').then((token)=>{
         if(token){
-            config.headers.Authorization=token;
+           onfig.headers.Authorization=token;
         }
           axioshooks(newurl, data, config)
           .then((response) => {
@@ -141,7 +137,9 @@ export default ({
               handler(null, response, response.data);
               dispatch({ type: actions.fail, payload: response });
              
-            
+              if(response.data.error.login){
+                  deloneStorage("token");
+              }
             } else {
               if (response.data) {
                 handler(null, response, response.data);
@@ -152,6 +150,7 @@ export default ({
             }
           },(err)=>{
             console.log(err,JSON.stringify(err),"error11");
+            handler(error, null);
           })
           .catch((error) => {
             handler(error, null);
