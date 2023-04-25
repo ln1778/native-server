@@ -1,6 +1,6 @@
 {
   "name": "ln1778-server",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "native-server",
   "main": "index.js",
   "scripts": {

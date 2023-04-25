@@ -128,7 +128,7 @@ export default ({
     }
     getStorage('token').then((token)=>{
         if(token){
-           onfig.headers.Authorization=token;
+          config.headers.Authorization=token;
         }
           axioshooks(newurl, data, config)
           .then((response) => {
