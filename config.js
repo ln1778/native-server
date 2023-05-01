@@ -1,4 +1,4 @@
-const indexurl = ['https://www.allianceshopping.cn/'];
+const indexurl = ['https://chat.allianceshopping.cn/'];
 
 let i=[0];
 

@@ -119,6 +119,9 @@ export default ({
         params.append("t", Math.random());
         paramsdata = params;
       }
+    }else{
+      params.append("t", Math.random());
+        paramsdata = params;
     }
     let newurl = '';
     if (/^http/.test(url)) {
@@ -128,9 +131,9 @@ export default ({
     }
     getStorage('token').then((token)=>{
         if(token){
-          config.headers.Authorization=token;
+           config.headers.Authorization=token;
         }
-          axioshooks(newurl, data, config)
+          axioshooks(newurl, paramsdata, config)
           .then((response) => {
             console.log(response.data, 'response',newurl);
             if (response.data.code == 400) {

@@ -107,14 +107,19 @@ AsyncStorage.getItem(key,(err,value)=>{
   if(err||!value){
     resolve(false);
   }else{
-   resolve(value);
+      try{
+        resolve(JSON.parse(value));
+      }catch(err){
+        resolve(value);
+      }
   }
 });
   })
 } 
 export function addStorage(key,value){
   return new Promise(function(resolve, reject) {
-    AsyncStorage.setItem(key,value).then((e)=>{
+      let newvalue=JSON.stringify(value);
+    AsyncStorage.setItem(key,newvalue).then((e)=>{
     resolve(e);
     },(error)=>{
     reject(error)
