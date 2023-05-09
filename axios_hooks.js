@@ -2,7 +2,6 @@ import { useState, useEffect, useReducer } from 'react';
 import axios, * as defaultAxios from 'axios';
 import { getStorage, deloneStorage } from './commont';
 import { initialResponse, responseReducer, actions } from './reducers';
-import myconfig from "./config";
 
 /**
  * Params
