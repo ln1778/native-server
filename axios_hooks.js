@@ -2,7 +2,7 @@ import { useState, useEffect, useReducer } from 'react';
 import axios, * as defaultAxios from 'axios';
 import { getStorage, deloneStorage } from './commont';
 import { initialResponse, responseReducer, actions } from './reducers';
-
+import { CommonActions } from '@react-navigation/native'; 
 /**
  * Params
  * @param  {AxiosInstance} axios - (optional) The custom axios instance
@@ -29,7 +29,9 @@ export default ({
   url,
   method = 'post',
   data = {},
+  header={token:true},
   trigger,
+  navigation,
   filter,
   forceDispatchEffect,
   customHandler,
@@ -130,7 +132,12 @@ export default ({
     }
     getStorage('token').then((token)=>{
         if(token){
-           config.headers.Authorization=token;
+          if(header.token){
+            config.headers.token=token;
+          }else{
+            config.headers.Authorization=token;
+          }
+          
         }
           axioshooks(newurl, paramsdata, config)
           .then((response) => {
@@ -141,6 +148,28 @@ export default ({
              
               if(response.data.error.login){
                   deloneStorage("token");
+                  if(navigation&&CommonActions){
+                    navigation.dispatch(
+                      CommonActions.reset({
+                        index: 0,
+                        routes: [
+                          { name: 'login' }
+                        ],
+                      })
+                    );
+                  }
+              }
+              if(response.data.errcode==1002){
+                if(navigation&&CommonActions){
+                  navigation.dispatch(
+                    CommonActions.reset({
+                      index: 0,
+                      routes: [
+                        { name: 'login' }
+                      ],
+                    })
+                  );
+                }
               }
             } else {
               if (response.data) {
@@ -152,12 +181,15 @@ export default ({
             }
           },(err)=>{
             console.log(err,JSON.stringify(err),"error11");
-            handler(error, null);
-          })
-          .catch((error) => {
-            handler(error, null);
+            if(window.config.errorurl&&window.config.errorurl!=""){
+              axios.post(window.config.errorurl, {error:JSON.stringify(err)}, config);
+            }
+          }).catch((error) => {
+            if(window.config.errorurl&&window.config.errorurl!=""){
+              axios.post(window.config.errorurl, {error:JSON.stringify(error)}, config);
+            }
             if (!isCancel(error)) {
-              dispatch({ type: actions.fail, payload: error });
+              dispatch({ type: actions.fail, payload: error.message });
             }
           });
       });
