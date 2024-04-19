@@ -142,7 +142,19 @@ export default ({
           axioshooks(newurl, paramsdata, config)
           .then((response) => {
             console.log(response.data, 'response',newurl);
-            if (response.data.code == 400) {
+            if(response.data.errcode&&response.data.errcode==1002){
+              console.log("loginout");
+              if(navigation&&CommonActions){
+                navigation.dispatch(
+                  CommonActions.reset({
+                    index: 0,
+                    routes: [
+                      { name: 'login' }
+                    ],
+                  })
+                );
+              }
+            }else if (response.data.code == 400) {
               handler(null, response, response.data);
               dispatch({ type: actions.fail, payload: response });
              
@@ -158,19 +170,7 @@ export default ({
                       })
                     );
                   }
-              }
-              if(response.data.errcode==1002){
-                if(navigation&&CommonActions){
-                  navigation.dispatch(
-                    CommonActions.reset({
-                      index: 0,
-                      routes: [
-                        { name: 'login' }
-                      ],
-                    })
-                  );
-                }
-              }
+              } 
             } else {
               if (response.data) {
                 handler(null, response, response.data);
