@@ -335,37 +335,37 @@ export function formatDate(date, format = 'Y-m-d h:M') {
                 date = date + '0';
             }
         }
-        date = new Date(window.MyNumber(date));
+        date = new Date(Number(date));
     } else if (typeof date === 'undefined') {
         return '';
     }
     if (!format) {
         format = 'Y-m-d';
     }
-    if (window.MyNumber(date.getHours()) < 10) {
+    if (Number(date.getHours()) < 10) {
         var hour = '0' + String(date.getHours());
     }
     else {
         var hour = date.getHours();
     }
-    if (window.MyNumber(date.getMinutes()) < 10) {
+    if (Number(date.getMinutes()) < 10) {
         var Minute = '0' + String(date.getMinutes());
     }
     else {
         var Minute = date.getMinutes();
     }
-    if (window.MyNumber(date.getSeconds()) < 10) {
+    if (Number(date.getSeconds()) < 10) {
         var Seconds = '0' + String(date.getSeconds());
     }
     else {
         var Seconds = date.getSeconds();
     }
-    if (window.MyNumber((date.getMonth()) + 1) < 10) {
+    if (Number((date.getMonth()) + 1) < 10) {
         var month = '0' + String(date.getMonth() + 1);
     } else {
         var month = date.getMonth() + 1;
     }
-    if (window.MyNumber(date.getDate()) < 10) {
+    if (Number(date.getDate()) < 10) {
         var day = '0' + String(date.getDate());
     } else {
         var day = date.getDate();
