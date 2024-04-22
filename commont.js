@@ -314,8 +314,72 @@ export function randomArray(arr){
              }
              return arr;
  }
-        
+   
 
- const commont={getCountDays,delallStorage,lastfiveday,lastfiveechart,canvasfn,getQueryString,html_encode,html_format,delJSONData,html_decode,getStorage,addStorage,deloneStorage,isIphoneX,randomArray,swap,bubbleSort,saveImage};
+//把时间戳格式化成标准格式 第一个参数为时间戳，第二个参数为格式例如 ‘Y-m-d h:M:s'
+export function formatDate(date, format = 'Y-m-d h:M') {
+    const days = [
+        '周日',
+        '周一',
+        '周二',
+        '周三',
+        '周四',
+        '周五',
+        '周六'
+    ];
+    if (typeof date == 'number' || typeof date == 'string') {
+        date = String(date);
+        if (date.length < 13) {
+            const j = 13 - date.length;
+            for (let i = 0; i < j; i++) {
+                date = date + '0';
+            }
+        }
+        date = new Date(window.MyNumber(date));
+    } else if (typeof date === 'undefined') {
+        return '';
+    }
+    if (!format) {
+        format = 'Y-m-d';
+    }
+    if (window.MyNumber(date.getHours()) < 10) {
+        var hour = '0' + String(date.getHours());
+    }
+    else {
+        var hour = date.getHours();
+    }
+    if (window.MyNumber(date.getMinutes()) < 10) {
+        var Minute = '0' + String(date.getMinutes());
+    }
+    else {
+        var Minute = date.getMinutes();
+    }
+    if (window.MyNumber(date.getSeconds()) < 10) {
+        var Seconds = '0' + String(date.getSeconds());
+    }
+    else {
+        var Seconds = date.getSeconds();
+    }
+    if (window.MyNumber((date.getMonth()) + 1) < 10) {
+        var month = '0' + String(date.getMonth() + 1);
+    } else {
+        var month = date.getMonth() + 1;
+    }
+    if (window.MyNumber(date.getDate()) < 10) {
+        var day = '0' + String(date.getDate());
+    } else {
+        var day = date.getDate();
+    }
+    format = format.replace('Y', date.getFullYear())
+        .replace('m', month)
+        .replace('d', day)
+        .replace('h', hour)
+        .replace('M', Minute)
+        .replace('D', days[date.getDay()])
+        .replace('s', Seconds);
+    return format;
+};     
+
+ const commont={getCountDays,formatDate,delallStorage,lastfiveday,lastfiveechart,canvasfn,getQueryString,html_encode,html_format,delJSONData,html_decode,getStorage,addStorage,deloneStorage,isIphoneX,randomArray,swap,bubbleSort,saveImage};
 
  export default commont;
